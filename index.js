@@ -33,7 +33,7 @@ server.get('/api/users', (req, res) => {
     })
 });
 
-server.get('api/users/:id', (req, res) => {
+server.get('/api/users/:id', (req, res) => {
     const id = req.params.id;
     db.findById(id)
     .then(user => {
@@ -41,11 +41,11 @@ server.get('api/users/:id', (req, res) => {
     })
     .catch(err => {
         console.log('error', err);
-        res.status(500).json({error: 'could not get specific user'})
+        res.status(404).json({error: 'could not get specific user'})
     })
 })
 
-server.delete('api/users/:id', (req, res) => {
+server.delete('/api/users/:id', (req, res) => {
     const id = req.params.id;
     
     db.remove(id)
