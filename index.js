@@ -56,6 +56,18 @@ server.delete('/api/users/:id', (req, res) => {
         console.log('error', err);
         res.status(500).json({ error: 'failed to delete the user from the db' })
     })
+});
+
+server.put('/api/users/:id', (req, res) => {
+    const id = req.params.id;
+    const user = req.body;
+    db.update(id, user)
+    .then(users => {
+        res.status(200).json(user)
+    })
+    .catch(err => {
+        console.log('error', err);
+    })
 })
 
 const port = 8000;
