@@ -21,7 +21,7 @@ server.post('/api/users', (req, res) => {
         })
         .catch(err => {
             console.log('error', err);
-            res.status(500).json({ error: 'could not add the user to the db'})
+            res.status(500).json({ error: 'There was an error while saving the user to the database'})
         })
     }
 });
@@ -33,20 +33,23 @@ server.get('/api/users', (req, res) => {
     })
     .catch(err => {
         console.log('error', err);
-        res.status(500).json({error: 'failed to get users from db'})
+        res.status(500).json({message: 'The user information could not be retrieved'})
     })
 });
 
 server.get('/api/users/:id', (req, res) => {
     const id = req.params.id;
+   
     db.findById(id)
-    .then(user => {
-        res.status(200).json(user)
-    })
-    .catch(err => {
-        console.log('error', err);
-        res.status(404).json({error: 'could not get specific user'})
-    })
+        .then(user => {
+            !user ? res.status(404).json({ message: "The user with the specified ID does not exist." }) :
+            res.status(200).json(user)
+        })
+        .catch(err => {
+            console.log('error', err);
+            res.status(500).json({ error: "The user information could not be retrieved." })
+        })
+    
 })
 
 server.delete('/api/users/:id', (req, res) => {
