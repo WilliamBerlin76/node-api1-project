@@ -9,17 +9,21 @@ server.use(express.json());
 
 server.post('/api/users', (req, res) => {
     const userInfo = req.body;
-
+    
     console.log('userInformation', userInfo);
-
-    db.insert(userInfo)
-    .then(user => {
-        res.status(201).json(user)
-    })
-    .catch(err => {
-        console.log('error', err);
-        res.status(500).json({ error: 'could not add the user to the db'})
-    })
+    if (!userInfo.name || !userInfo.bio){
+      
+        return res.status(400).json({errorMessage: "Please provide name and bio for the user."})
+    } else { 
+        db.insert(userInfo)
+        .then(user => {
+            res.status(201).json(user)
+        })
+        .catch(err => {
+            console.log('error', err);
+            res.status(500).json({ error: 'could not add the user to the db'})
+        })
+    }
 });
 
 server.get('/api/users', (req, res) => {
